@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "solutions": "Solutions",
+    "projects": "Projects",
+    "company": "Company",
+    "careers": "Careers",
+    "resources": "Resources",
+    "blog": "Blog",
+    "clientsPartners": "Clients & Partners",
+    "contact": "Contact",
+    "getInTouch": "Get in Touch"
+  },
+  "home": {
+    "heroTitle": "Innovative ICT Solutions for Your Business",
+    "heroSubtitle": "Edge Communication Technologies is a leading technology solution provider in Ethiopia.",
+    "exploreSolutions": "Explore Solutions",
+    "getInTouch": "Get in Touch"
+  },
+  "footer": {
+    "copyright": "© {year} Edge Communication Technologies. All rights reserved."
+  }
+}

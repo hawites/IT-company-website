@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper: true if user is signed in
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    // Helper: user has one of the CMS roles (set via custom claims in Auth)
+    function hasRole(role) {
+      return isSignedIn() && request.auth.token.role == role;
+    }
+    function hasAnyRole(roles) {
+      return isSignedIn() && request.auth.token.role in roles;
+    }
+
+    // Public read for published content
+    match /posts/{id} {
+      allow read: if resource.data.published == true;
+      allow read, write: if hasAnyRole(['admin', 'editor', 'marketing']);
+    }
+    match /resources/{id} {
+      allow read: if resource.data.published == true;
+      allow read, write: if hasAnyRole(['admin', 'editor', 'marketing']);
+    }
+    match /projects/{id} {
+      allow read: if resource.data.published == true;
+      allow read, write: if hasAnyRole(['admin', 'editor', 'marketing']);
+    }
+    match /services/{id} {
+      allow read: if true;
+      allow write: if hasAnyRole(['admin', 'editor']);
+    }
+    match /team/{id} {
+      allow read: if true;
+      allow write: if hasAnyRole(['admin', 'editor']);
+    }
+    match /clients_partners/{id} {
+      allow read: if true;
+      allow write: if hasAnyRole(['admin', 'editor', 'marketing']);
+    }
+    match /jobs/{id} {
+      allow read: if resource.data.published == true;
+      allow read, write: if hasAnyRole(['admin', 'hr']);
+    }
+    match /applications/{id} {
+      allow read, write: if hasAnyRole(['admin', 'hr']);
+    }
+    match /contact_submissions/{id} {
+      allow read: if hasAnyRole(['admin', 'editor', 'marketing']);
+      allow create: if true;
+    }
+    match /inquiries/{id} {
+      allow read: if hasAnyRole(['admin', 'editor', 'marketing']);
+      allow create: if true;
+    }
+    match /profiles/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+  }
+}
